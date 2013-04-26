@@ -1,0 +1,4 @@
+
+## 2013/04/26 
+	添加简单的页面分析功能和爬行功能 Update: analysis.py fetch.py
+
