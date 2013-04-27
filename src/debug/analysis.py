@@ -22,16 +22,24 @@ class Analysis(object):
 
     >>> Analysis("db", "keyword") #doctest: +ELLIPSIS 
     <....Analysis object at 0x...>
+
+    >>> a = Analysis()
+    >>> a.fetch_links("http://example.com", "<a href='test1'>test1</a><a href='/test2'>test2</a> \
+            <a href='http://test.com/test3'>test3</a><a href='http://example.com/test4/test4'>test4</a> \
+            <a href='http://example.com/test5'>test5</a><a href='mailto:test6@mail.com'>test6</a>") #doctest: +NORMALIZE_WHITESPACE
+    [u'http://example.com/test1', u'http://example.com/test2', u'http://test.com/test3', u'http://example.com/test4/test4', \
+    u'http://example.com/test5', u'mailto:test6@mail.com']
+
     """ 
     def __init__(self, dbsave = None, keyword = None):
         self.dbsave = dbsave
         self.keyword = keyword
 
-    def fetch_links(self, baseurl, urlobj):
+    def fetch_links(self, baseurl, content):
         """
         从urllib2打开的对象中过滤出所有的link, 返回url列表
         """
-        content = Beautiful.Soup(urlobj.read())
+        content = BeautifulSoup(content)
         links = [ link.get("href") for link in content.findAll(re.compile("^(a|A)")) ]
         urls = []
         for url in links:
@@ -41,7 +49,6 @@ class Analysis(object):
             if url is None:
                 continue
             #flag
-            print "----->", url
             urls.append(url)
         return urls
     
@@ -57,13 +64,13 @@ class Analysis(object):
         url = urlparse.urljoin(baseurl, url)
         return url
 
-    def find_keyword(self, urlobj):
+    def find_keyword(self, link, content):
         """
         在网页中寻找关键字，若存在返回url，否则返回None
         """
-        d = {'keyword' : self.keyword, 'url' : urlobj.url}
+        d = {'keyword' : self.keyword, 'url' : link}
         reo = re.compile(re.escape(self.keyword))
-        if reo.search(urlobj.read()) is not None:
+        if reo.search(content) is not None:
             return d
         return None
         
@@ -71,4 +78,3 @@ class Analysis(object):
 if __name__ == "__main__":
     import doctest
     doctest.testmod()
-

@@ -4,3 +4,5 @@
 
 ## 2013/04/27
 	添加抓取页面错误处理功能 Update: fetch.py
+	添加了简单的测试模块 Update: analysis.py fetch.py
+

@@ -10,13 +10,17 @@ import urllib2
 class Fetch(object):
     """
     根据url和深度抓取links
+
+    >>> Fetch("http://example.com")
+
     """
     def __init__(self, url, depth = 0):
         self.jobs = Queue()
         self.maxdepth = depth
         self.fetced_urls = []
-        self.jobs.put((url, 0))
         self.analysis = Analysis()
+        url = url if url.startwith("http://") else "http://" + url
+        self.jobs.get((url,0))
 
     def work(self):
         while True:
@@ -33,7 +37,7 @@ class Fetch(object):
             return 
         #判断页面是否正确，判断url是否正确
         #analysis = Analysis()
-        urls = self.analysis.fetch_links(url, urlobj)
+        urls = self.analysis.fetch_links(url, urlobj.read())
         self.add_job(urls, depth)
 
     def add_job((self, urls, depth):
@@ -55,3 +59,6 @@ class Fetch(object):
             return None
         return urlobj
 
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
