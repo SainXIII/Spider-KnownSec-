@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-__all__ = []
+__all__ = [ "Fetch" ]
 
 from analysis import Analysis
 from Queue import Queue
@@ -47,9 +47,11 @@ class Fetch(object):
         """
         try:
             urlobj = urllib2.urlopen(url)
-        except ValueError, URLError:
+        except (ValueError, urllib2.URLError):
+            print "(Log: URL Error)"
             return None
         if urlobj.code >= 400:
+            print "(Log: Can't visit site)"
             return None
         return urlobj
 

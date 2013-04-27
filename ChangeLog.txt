@@ -2,3 +2,5 @@
 ## 2013/04/26 
 	添加简单的页面分析功能和爬行功能 Update: analysis.py fetch.py
 
+## 2013/04/27
+	添加抓取页面错误处理功能 Update: fetch.py

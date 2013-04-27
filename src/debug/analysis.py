@@ -13,6 +13,15 @@ import re
 class Analysis(object):
     """ 
     分析page,过滤出所有的链接，并对链接进行处理。
+
+    >>> Analysis() #doctest: +ELLIPSIS 
+    <....Analysis object at 0x...>
+
+    >>> Analysis("db") #doctest: +ELLIPSIS 
+    <....Analysis object at 0x...>
+
+    >>> Analysis("db", "keyword") #doctest: +ELLIPSIS 
+    <....Analysis object at 0x...>
     """ 
     def __init__(self, dbsave = None, keyword = None):
         self.dbsave = dbsave
@@ -58,4 +67,8 @@ class Analysis(object):
             return d
         return None
         
-        
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
+
