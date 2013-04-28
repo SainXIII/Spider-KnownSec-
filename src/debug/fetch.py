@@ -1,64 +1,40 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-__all__ = [ "Fetch" ]
-
 from analysis import Analysis
-from Queue import Queue
+from linkpool import Linkpool
+
 import urllib2
 
-class Fetch(object):
+def fetchpool(analysis, linkpool):
     """
-    根据url和深度抓取links
-
-    >>> Fetch("http://example.com")
-
+    fetchpool用于粘和页面分析和链接处理功能。
+    页面分析和链接处理是fetcher公共使用的.
     """
-    def __init__(self, url, depth = 0):
-        self.jobs = Queue()
-        self.maxdepth = depth
-        self.fetced_urls = []
-        self.analysis = Analysis()
-        url = url if url.startwith("http://") else "http://" + url
-        self.jobs.get((url,0))
+    def fetcher(link):
+        link = link if link.startswith("http://") else "http://" + link
+        urlobj = isOK(link)
+        if urlobj is None:
+            return []
 
-    def work(self):
-        while True:
-            if self.jobs.empty():
-                break
-            url, depth = self.jobs.get()
-            self.fetch(url, depth+1)
+        analysis.find_keyword(link, urlobj.read())
+        links = analysis.fetch_links(link, urlobj.read())
+        newlinks = linkpool.filter(link, links)
 
-    def fetch(self, url, depth):
-        if depth > self.maxdepth:
-            return
-        urlobj = self.isOK(url) 
-        if urlobj is None
-            return 
-        #判断页面是否正确，判断url是否正确
-        #analysis = Analysis()
-        urls = self.analysis.fetch_links(url, urlobj.read())
-        self.add_job(urls, depth)
-
-    def add_job((self, urls, depth):
-        for url in urls:
-            if url not in self.fetched_urls:
-                self.jobs.put((url, depth))
-
-    def isOK(self, url):
-        """
-        判断url链接是否可以打开,及正确性
-        """
-        try:
-            urlobj = urllib2.urlopen(url)
-        except (ValueError, urllib2.URLError):
-            print "(Log: URL Error)"
-            return None
-        if urlobj.code >= 400:
-            print "(Log: Can't visit site)"
-            return None
-        return urlobj
-
-if __name__ == "__main__":
-    import doctest
-    doctest.testmod()
+        return newlinks
+    return fetcher
+        
+def isOK(self, url):
+    """
+    判断页面使用可以打开以及正确性
+    """
+    try:
+        urlobj = urllib2.urlopen(url)
+    except (ValueError, urllib2.URLError):
+        print "(Log: URL Error)"
+        return None
+    if urlobj.code >= 400:
+        print "(Log: Can't visit site)"
+        return None
+    return urlobj
+    

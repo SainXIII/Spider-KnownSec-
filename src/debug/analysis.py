@@ -10,6 +10,7 @@ import logging
 import datetime
 import re
 
+
 class Analysis(object):
     """ 
     分析page,过滤出所有的链接，并对链接进行处理。
@@ -40,7 +41,7 @@ class Analysis(object):
         从urllib2打开的对象中过滤出所有的link, 返回url列表
         """
         content = BeautifulSoup(content)
-        links = [ link.get("href") for link in content.findAll(re.compile("^(a|A)")) ]
+        links = [link.get("href") for link in content.findAll(re.compile("^(a|A)"))]
         urls = []
         for url in links:
             if type(url) == type(None):
@@ -78,3 +79,4 @@ class Analysis(object):
 if __name__ == "__main__":
     import doctest
     doctest.testmod()
+
