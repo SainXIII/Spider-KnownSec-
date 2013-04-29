@@ -2,10 +2,10 @@
 # -*- coding:utf-8 -*-
 
 import threading
-import Queue
+from Queue import Queue
 
 
-class Thread(threading.thread):
+class Thread(threading.Thread):
     def __init__(self, worker, task_queue, threadpool):
         super(Thread, self).__init__()
         self.worker = worker
@@ -14,24 +14,31 @@ class Thread(threading.thread):
 
     def run(self):
         while True:
-            print "[Thread] run start"
+            print self.task_queue.qsize()
+            if self.task_queue.empty():
+                self.threadpool.InActiveOne()
+                break
+            #print "[Run Start] %s" % threading.currentThread()
             task = self.task_queue.get()
-
+            print "[Job: %s]" % task
             try:
                 new_tasks = self.worker(task)
                 if new_tasks is not None:
                     self.threadpool.add(new_tasks)
-                print "Thread tasks commit"
+                #print "[tasks commit] %s" % threading.currentThread()
             except Exception as e:
-                print "[Thread error]: %s %s", (taks, e)
+                print "[Thread error]: %s %s" % (task, e)
             finally:
-                print "[Thread] task done"
+                #if new_tasks is not None:
+                #    self.threadpool.add(new_tasks)
+                #print "[task done] %s" % threading.currentThread()
+                #print "finish %s %s" % (task, threading.currentThread())
                 self.task_queue.task_done()
 
 
 class Threadpool(object):
     def __init__(self, worker, max_thread=10, thread=Thread,
-                 queue=Queue, lock=threading.Lock()):
+                 queue=Queue, lock=threading.RLock()):
         self.worker = worker
         self.task_queue = queue()
         self.thread = thread
@@ -41,13 +48,14 @@ class Threadpool(object):
         self.activeThread = 0
 
     def add(self, tasks):
+        #print tasks
         for task in tasks:
-            self.task_queue.put(tasks)
-            #print "[task_queue] add task: %s", task
+            self.task_queue.put(task)
+        #    print "[add task]: %s"% task
 
         #判断是否创建新的线程
         #active_thread < max_thread and active_thread < tasks
-        len_tasks = self.take.qsize()
+        len_tasks = self.task_queue.qsize()
         self.lock.acquire()
         create_tasks = self.max_thread - self.activeThread
         if len_tasks <= create_tasks:
@@ -61,13 +69,15 @@ class Threadpool(object):
         t = self.thread(self.worker, self.task_queue, self)
         t.start()
         self.activeThread += 1
-        #print "[Thread pool] thread set up"
+        #print "[set up] %s" %\
+        #        threading.currentThread()
         self.lock.release()
 
     def InActiveOne(self):
         self.lock.acquire()
         self.activeThread -= 1
-        print "[Thread pool] thread shut down"
+        #print "[shut down]%s" %\
+        #        threading.currentThread()
         self.lock.release()
 
     def status(self):

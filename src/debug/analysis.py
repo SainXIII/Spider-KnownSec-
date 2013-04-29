@@ -69,12 +69,17 @@ class Analysis(object):
         """
         在网页中寻找关键字，若存在返回url，否则返回None
         """
+        if self.dbsave is None:
+            return
         d = {'keyword' : self.keyword, 'url' : link}
-        reo = re.compile(re.escape(self.keyword))
-        if reo.search(content) is not None:
+        if self.keyword is None:
             return d
-        return None
-        
+        reo = re.compile(re.escape(self.keyword))
+        if reo.search(re.compile(re.escepe(self.keyword))) \
+                is not None:
+            return d
+        return
+
 
 if __name__ == "__main__":
     import doctest
