@@ -11,3 +11,6 @@
 	由于线程池的加入，拆分fetch模块 Delete: fetch.py
 	拆分fetch模块,添加链接处理模块 Update: linkpool.py
 	添加胶水模块,用于粘和analysis linkpool threadpool的工作 Update: fetch.py
+
+## 2013/04/29
+	修改fetch模块，用类封装各个粘和功能 Delete: fetch.py Update: fetchpool.py
