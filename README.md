@@ -8,7 +8,7 @@ spider.py -u url -d deep -f logfile -l loglevel(1-5)  --testself -thread number 
 
 __参数说明：__
 
- -u 指定爬虫开始地址
+	-u 指定爬虫开始地址
 
 	-d 指定爬虫深度
 	
