@@ -30,7 +30,7 @@ class Linkpool(object):
         .过滤非本站的链接
         .过滤已经爬过的链接
         """
-        #print '|||||||||||||||||||||||', self.linked
+        #print '|||||||||||||||||||||||', threading.currentThread()
         #print "Filter: %s has %s links" % (baseurl, len(urls))
         if len(self.linked) == 0:
             self.addlink(baseurl, 0)
@@ -46,15 +46,18 @@ class Linkpool(object):
             if self.host == host:
                 Turl.append(i)
         # 过滤已经爬过的链接
+        #print '|||||||||||||||||||||||', threading.currentThread(), Turl
         newlinks = []
         for i in Turl:
             self.lock.acquire()
             if self.linked.has_key(i):
+                self.lock.release()
                 continue
             else:
                 newlinks.append(i) 
                 self.addlink(i, depth)
             self.lock.release()
+        #print '|||||||||||||||||||||||', threading.currentThread(), Turl
         return newlinks
 
 if __name__ == "__main__":

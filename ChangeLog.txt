@@ -15,3 +15,9 @@
 ## 2013/04/29
 	修改fetch模块，用类封装各个粘和功能 Delete: fetch.py Update: fetchpool.py
 	整个线程池和各个模块的工作，除去一些小bug。目前的问题是对非web页面的处理机制
+
+## 2013/04/30
+	修改linkpool模块的死锁bug Update: linkpool.py
+	添加了timeout Update: fetchpool.py
+
+

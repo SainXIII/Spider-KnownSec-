@@ -7,9 +7,9 @@ from threadpool import Thread, Threadpool
 from linkpool import Linkpool
 
 if __name__ == "__main__":
-    tasks = ["http://www.ouc.edu.cn/index.htm", ]
+    tasks = ["http://it.ouc.edu.cn/Default.aspx", ]
     analysis = Analysis()
-    linkpool = Linkpool(depth=3)
+    linkpool = Linkpool(depth=2)
     fetchpool = fetchpool(analysis, linkpool)
     threadpool = Threadpool(fetchpool.fetcher())
     threadpool.add(tasks)

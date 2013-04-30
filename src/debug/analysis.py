@@ -63,6 +63,8 @@ class Analysis(object):
         if len(url) == 0:
             return None
         url = urlparse.urljoin(baseurl, url)
+        if urllib2.Request(url).get_host() is None:
+            return None
         return url
 
     def find_keyword(self, link, content):

@@ -14,15 +14,18 @@ class Thread(threading.Thread):
 
     def run(self):
         while True:
-            print self.task_queue.qsize()
+            print self.threadpool.status()
+            #print self.task_queue.qsize()
             if self.task_queue.empty():
                 self.threadpool.InActiveOne()
+                #print "InActiveOne() %s" % threading.currentThread()
                 break
             #print "[Run Start] %s" % threading.currentThread()
             task = self.task_queue.get()
-            print "[Job: %s]" % task
+            #print "[Job: %s  + %s]" % (task, threading.currentThread())
             try:
                 new_tasks = self.worker(task)
+                #print threading.currentThread(), new_tasks
                 if new_tasks is not None:
                     self.threadpool.add(new_tasks)
                 #print "[tasks commit] %s" % threading.currentThread()
@@ -33,6 +36,7 @@ class Thread(threading.Thread):
                 #    self.threadpool.add(new_tasks)
                 #print "[task done] %s" % threading.currentThread()
                 #print "finish %s %s" % (task, threading.currentThread())
+                #print "task_queue task_done() ++ %s" % threading.currentThread()
                 self.task_queue.task_done()
 
 
@@ -81,7 +85,7 @@ class Threadpool(object):
         self.lock.release()
 
     def status(self):
-        return self.task_queue_qsize(), self.activeThread
+        return self.task_queue.qsize(), self.activeThread
 
     def join(self):
         #wait for all task done
