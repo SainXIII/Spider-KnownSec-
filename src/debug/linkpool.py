@@ -15,9 +15,9 @@ class Linkpool(object):
     >>> l.filter("http://blog.knownsec.com", ["http://www.knownsec.com", "http://blog.knownsec.com/about/"]) #doctest +NORMALIZE_WHITESPACE
     ['http://blog.knownsec.com/about/']
     """
-    def __init__(self, depth=0, lock=threading.RLock()):
+    def __init__(self, depth, lock=threading.RLock()):
         self.lock = lock
-        self.depth = 0
+        self.depth = depth
         self.linked = {} 
 
     def addlink(self, link, depth):
@@ -37,7 +37,7 @@ class Linkpool(object):
             self.host = urllib2.Request(baseurl).get_host()
         depth = self.linked[baseurl]
         #print "links: %s, depth: %s" % (baseurl, depth-1)
-        if depth > self.depth:
+        if depth >= self.depth:
             return []
         # 过滤非本站的链接
         Turl = []
@@ -55,7 +55,7 @@ class Linkpool(object):
                 continue
             else:
                 newlinks.append(i) 
-                self.addlink(i, depth)
+                self.addlink(i, depth+1)
             self.lock.release()
         #print '|||||||||||||||||||||||', threading.currentThread(), Turl
         return newlinks

@@ -34,7 +34,7 @@ class Analysis(object):
     """ 
     def __init__(self, dbsave = None, keyword = None):
         self.dbsave = dbsave
-        self.keyword = keyword
+        self.keyword = unicode(keyword, 'utf-8')
 
     def fetch_links(self, baseurl, content):
         """
@@ -73,13 +73,11 @@ class Analysis(object):
         """
         if self.dbsave is None:
             return
-        d = {'keyword' : self.keyword, 'url' : link}
         if self.keyword is None:
-            return d
+            self.dbsave.store(link)
         reo = re.compile(re.escape(self.keyword))
-        if reo.search(re.compile(re.escepe(self.keyword))) \
-                is not None:
-            return d
+        if reo.search(unicode(content, 'utf-8')) is not None:
+            self.dbsave.store(link, self.keyword)
         return
 
 
