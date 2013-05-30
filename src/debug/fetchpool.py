@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
+__all__ = ['Fetchpool', 'isOK', 'codec']
+
 import urllib2
 import threading
 import chardet
@@ -42,6 +44,9 @@ def isOK(url):
     return urlobj
         
 def codec(content):
+    """
+    调整page的编码
+    """
     code = chardet.detect(content)["encoding"]
     if code in ["GB2312", "GBK"]:
         code = "GB2312"

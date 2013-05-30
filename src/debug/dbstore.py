@@ -9,12 +9,12 @@ import logging
 import os.path
 
 class Storepool(object):
-    """
-    """
-    def __init__(self, db="spider.db", lock=threading.RLock()):
-        self.conn = sqlite3.connect(db, check_same_thread=False)
-        self.lock = lock
-        self.createtable()
+	"""
+	"""
+	def __init__(self, db="spider.db", lock=threading.RLock()):
+		self.conn = sqlite3.connect(db, check_same_thread=False)
+		self.lock = lock
+		self.createtable()
 
     def createtable(self):
         with self.conn:

@@ -69,21 +69,21 @@ class Threadpool(object):
         self.lock.release()
 
     def ActiveOne(self):
-        self.lock.acquire()
-        t = self.thread(self.worker, self.task_queue, self)
-        t.start()
-        self.activeThread += 1
-        #print "[set up] %s" %\
+		self.lock.acquire()
+		t = self.thread(self.worker, self.task_queue, self)
+		t.start()
+		self.activeThread += 1
+　　　　#print "[set up] %s" %\
         #        threading.currentThread()
         self.lock.release()
-
+ 
     def InActiveOne(self):
         self.lock.acquire()
         self.activeThread -= 1
         #print "[shut down]%s" %\
         #        threading.currentThread()
         self.lock.release()
-
+ 
     def status(self):
         return self.task_queue.qsize(), self.activeThread
 
