@@ -10,6 +10,7 @@ import logging
 import datetime
 import re
 
+logger = logging.GetLogger("spider")
 
 class Analysis(object):
 	"""

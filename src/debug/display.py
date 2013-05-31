@@ -7,6 +7,8 @@ import threading
 import time
 import logging
 
+log_term = logging.getLogger("term")
+
 class Status(object):
 	"""
 	控制terminal端显示
@@ -21,12 +23,13 @@ class Status(object):
 		"""
 		while True:
 			if self.threadpool.activeThread == 0:
-				print "all is over"
+				log_term("Mission is complete!!!")
 				break
 			task, thread = self.threadpool.status()
 			ctotal = self.linkpool.status()
-			print "Current Task: %s  Current Thread: %s total(fetched): %s" % (task, thread, ctotal)
-			time.sleep(2)
+			msg = "Current Task: %s  Current Thread: %s total(fetched): %s" % (task, thread, ctotal)
+			log_term(msg)
+			time.sleep(10)
 	
 	def display(self):
 		t = threading.Thread(target=self.currentStatus)

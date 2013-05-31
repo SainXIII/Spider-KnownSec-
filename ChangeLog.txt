@@ -25,4 +25,4 @@
 	
 ## 2013/05/31
 	添加了定时打印功能。 Update: display.py
-
+	添加了logger。 Update: logger.py
