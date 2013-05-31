@@ -6,15 +6,19 @@ from analysis import Analysis
 from threadpool import Thread, Threadpool
 from linkpool import Linkpool
 from dbstore import Storepool
+from display import Status
 
 if __name__ == "__main__":
-    tasks = ["http://it.ouc.edu.cn/Default.aspx", ]
-    dbpool = Storepool('test')
-    dbpool.createtable()
-    analysis = Analysis(dbpool, '中国')
-    linkpool = Linkpool(depth=1)
-    fetchpool = Fetchpool(analysis, linkpool)
-    threadpool = Threadpool(fetchpool.fetcher())
-    threadpool.add(tasks)
-    threadpool.join()
+	tasks = ["http://it.ouc.edu.cn/Default.aspx", ]
+	dbpool = Storepool('test')
+	dbpool.createtable()
+	analysis = Analysis(dbpool, '中国')
+	linkpool = Linkpool(depth=1)
+	fetchpool = Fetchpool(analysis, linkpool)
+	threadpool = Threadpool(fetchpool.fetcher())
+	threadpool.add(tasks)
+	print threadpool.status()
+	status = Status(threadpool, linkpool)
+	status.display()
+	threadpool.join()
 
