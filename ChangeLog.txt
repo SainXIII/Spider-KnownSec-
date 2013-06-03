@@ -26,3 +26,6 @@
 ## 2013/05/31
 	添加了定时打印功能。 Update: display.py
 	添加了logger。 Update: logger.py
+	
+## 2013/06/03
+	添加了参数处理功能。 Update: argsparse.py
