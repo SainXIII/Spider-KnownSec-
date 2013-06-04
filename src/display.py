@@ -23,12 +23,12 @@ class Status(object):
 		"""
 		while True:
 			if self.threadpool.activeThread == 0:
-				log_term("Mission is complete!!!")
+				log_term.info("Mission is complete!!!")
 				break
 			task, thread = self.threadpool.status()
 			ctotal = self.linkpool.status()
 			msg = "Current Task: %s  Current Thread: %s total(fetched): %s" % (task, thread, ctotal)
-			log_term(msg)
+			log_term.info(msg)
 			time.sleep(10)
 	
 	def display(self):

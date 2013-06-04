@@ -8,7 +8,7 @@ import threading
 import chardet
 import logging
 
-logger = logging.getLogger("spider")
+log_spider = logging.getLogger("spider")
 
 class Fetchpool(object):
 	def __init__(self, analysis, linkpool):
@@ -36,13 +36,15 @@ def isOK(url):
 	"""
 	try:  
 		#print url
-		urlobj = urllib2.urlopen(url, timeout=5)
+		urlobj = urllib2.urlopen(url, timeout=20)
 	except (ValueError, urllib2.URLError) as e:
 		log =  "(Log: URL Error)", e
-		logger(log)
+		# print log
+		log_spider.debug(log)
 		return None
 	if urlobj.code >= 400:
-		logger("(Log: Can't visit site)")
+		print "(Log: Can't visit site)"
+		log_spider.debug("(Log: Can't visit site)")
 		return None
 	return urlobj
         

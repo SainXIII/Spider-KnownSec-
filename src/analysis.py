@@ -10,7 +10,7 @@ import logging
 import datetime
 import re
 
-logger = logging.getLogger("spider")
+log_spider = logging.getLogger("spider")
 
 class Analysis(object):
 	"""
@@ -54,6 +54,7 @@ class Analysis(object):
 			if url is None:
 				continue
 			# flag
+			log_spider.debug("add url:%s" % url)
 			urls.append(url)
 		return urls
 
@@ -79,6 +80,7 @@ class Analysis(object):
 			return
 		if self.keyword is None:
 			self.dbsave.store(link)
+			return
 		reo = re.compile(re.escape(self.keyword))
 		if reo.search(unicode(content, 'utf-8')) is not None:
 			self.dbsave.store(link, self.keyword)

@@ -6,4 +6,9 @@ __all__ = ['tester']
 from os import popen
 
 def tester():
-	testfile = []
+	files = ["analysis.py", "fetchpool.py", "linkpool.py", "argsparse.py"]
+	for file in files:
+		res = popen("python %s" % file).read()
+		print res
+
+	

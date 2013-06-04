@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-from fetchpool import Fetchpool
-from analysis import Analysis
-from threadpool import Thread, Threadpool
-from linkpool import Linkpool
-from dbstore import Storepool
-from display import Status
-from argsparse import argsparse
-from logger import logger
-from tester import tester
+from src.fetchpool import Fetchpool
+from src.analysis import Analysis
+from src.threadpool import Thread, Threadpool
+from src.linkpool import Linkpool
+from src.dbstore import Storepool
+from src.display import Status
+from src.argsparse import argsparse
+from src.logger import logger
+from src.tester import tester
 
 from sys import argv, exit
 

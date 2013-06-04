@@ -4,24 +4,25 @@
 __all__ = ['logger']
 
 import logging
+from logging import config
 
-LOG_FOR = {
-	1: {"format": "%(asctime)s %(name)s %(link)s %(http_status)s"},
-	2: {"format": "%(asctime)s %(name)s %(link)s %(http_status)s %(content_size)s"},
-	3: {"format": "%(asctime)s %(name)s %(link)s %(http_status)s %(content_size)s %(server)s"},
-	4: {"format": "%(asctime)s %(name)s %(link)s %(http_status)s %(content_size)s %(server)s %(last_modified)s"},
-	5: {"format": "%(asctime)s %(name)s %(link)s %(http_status)s %(content_size)s %(server)s %(last_modified)s %(start_time)s %(end_time)s"},
+LOG_FMT = {
+	1: {"format": "[%(levelno)s] %(asctime)s %(message)s"},
+	2: {"format": "[%(levelno)s] %(asctime)s %(name)s %(message)s"},
+	3: {"format": "[%(levelno)s] %(asctime)s %(name)s %(message)s"},
+	4: {"format": "[%(levelno)s] %(asctime)s %(name)s %(thread)d %(threadName)s %(message)s"},
+	5: {"format": "[%(levelno)s] %(asctime)s %(name)s %(thread)d %(threadName)s %(filename)s %(message)s"},
 }
 
 
 LOG_DIC = {
 	"version": 1,
 	"formatters": {
-		"logfile_frm": {
-			"format": "%(levelname)s %(threadName)-15s%(filename)-15s%(module)+10s.%(funcName)-10s%(asctime)-25s%(message)s",
+		"logfile_fmt": {
+			"format": "%[%(levelno)s] (asctime)s %(message)s",
 		},
-		"display": {
-			"format": "%(message)s",
+		"display_fmt": {
+			"format": "%(message)s %(asctime)s",
 		},
 	},
 	
@@ -29,12 +30,14 @@ LOG_DIC = {
 		"logfile_hld": {
 			"class": "logging.FileHandler",
 			"filename": "spider.log",
-			"formatter": "logfile_frm",
+			"formatter": "logfile_fmt",
 			"level": "DEBUG",
 		},
 		"display": {
+			# "class": "logging.FileHandler",
+			# "filename": "spider.log",
 			"class": "logging.StreamHandler",
-			"formatter": "display",
+			"formatter": "display_fmt",
 			"level": "INFO",
 		}
 	},
@@ -42,7 +45,7 @@ LOG_DIC = {
 	"loggers": {
 		"spider": {
 			"level": "DEBUG",
-			"handlers": ["hld",],
+			"handlers": ["logfile_hld",],
 		},
 		"term": {
 			"level": "INFO",
@@ -54,10 +57,13 @@ LOG_DIC = {
 def logger(logfile="spider.log", level=1):
 	if not 1 <= level <= 5:
 		raise Exception("[args error]: 1 <= level <= 5")
-		
-	LOG_DIC["handlers"]["logfile_hld"]["filename"] = logfile
-	LOG_DIC["handlers"]["logfile_hld"]["level"] = logging.getLevelName(level*10)
-	LOG_DIC["formatters"]["logfile_fmt"]["format"] = LOR_FMT[level]
 	
-	logging.config.dicConfig(LOG_DIC)
+	# 根据需求修改配置文件
+	LOG_DIC["handlers"]["logfile_hld"]["filename"] = logfile
+	# print logging.getLevelName(level*10)
+	LOG_DIC["handlers"]["logfile_hld"]["level"] = logging.getLevelName(level*10)
+	LOG_DIC["formatters"]["logfile_fmt"] = LOG_FMT[level]
+	print LOG_DIC["formatters"]["logfile_fmt"]["format"]
+	
+	config.dictConfig(LOG_DIC)
 		

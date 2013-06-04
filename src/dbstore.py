@@ -8,6 +8,8 @@ import threading
 import logging
 import os.path
 
+log_spider = logging.getLogger("spider")
+
 class Storepool(object):
 	"""
 	"""
@@ -38,13 +40,14 @@ class Storepool(object):
 		with self.conn:
 			self.conn.execute(sql, para)
 
-	def store(self, url, keyword=None):
+	def store(self, url, keyword="None"):
 		self.lock.acquire()
 		sql = "insert into keyword \
 				(url, keyword) values (?, ?);"
 		para = (url, keyword)
 		with self.conn:
 			self.conn.execute(sql, para)
+		log_spider.debug("store data: %s" % para)
 		#print "--------", url, keyword
 		self.lock.release()
         

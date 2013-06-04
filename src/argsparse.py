@@ -12,13 +12,13 @@ def argsparse(arg):
 	
 	>>> input = "-u example.com -d 2 -f spider.log -l 3 --thread 3 --dbfile spider.db --key Web".split()
 	>>> print argsparse(input)
-	Namespace(d=2, dbfile='spider.db', f='spider.log', key='Web', l=3, testself=None, thread=3, u='example.com')
+	Namespace(dbfile='spider.db', depth=2, key='Web', logfile='spider.log', loglevel=3, testself=False, thread=3, url='example.com')
 	"""
 	parser = argparse.ArgumentParser(description="The usage of spider(KnownSec)")
 	parser.add_argument("-u", dest="url", metavar="URL", help="The url of Web site")#, required=True)
 	parser.add_argument("-d", dest="depth", metavar="Depth", help="The Depth", type=int)#, required=True)
 	parser.add_argument("-f", dest="logfile", metavar="Logfile", help="Log file", default="spider.log")
-	parser.add_argument("-l", dest="loglevel", metavar="LogLevel", help="Log level(1-5)", type=int, choices=xrange(1,6), default=3)
+	parser.add_argument("-l", dest="loglevel", metavar="LogLevel", help="Log level(1-5)", type=int, choices=xrange(1,6), default=1)
 	parser.add_argument("--thread", metavar="threads", help="The number of threads", type=int, default=10)
 	parser.add_argument("--dbfile", metavar="dbfile", help="DB file name")#, required=True)
 	parser.add_argument("--key", metavar="key", help="The key word")
@@ -26,7 +26,7 @@ def argsparse(arg):
 	
 	args = parser.parse_args(arg)
 	if not args.testself and (not args.url or not args.depth or not args.dbfile):
-		print "-u -d --dbfile is necessary"
+		print "-u -d --dbfile is necessary\n\n-h --help The usage of spider"
 		sys.exit(0)
 
 	return args
